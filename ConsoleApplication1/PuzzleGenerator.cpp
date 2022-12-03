@@ -11,8 +11,8 @@ using namespace cv;
 RNG rng(12345);
 
 bool debugVisuals = false;
-String puzzlePath = "../Resources/";
-String puzzleName = "jigsaw_5x5.JPG";
+String puzzlePath = "../Resources/10x10/";
+String puzzleName = "puzzle.JPG";
 
 int main()
 {
@@ -30,16 +30,21 @@ int main()
     if (debugVisuals) { imshow("Inverted", inverted); }
 
     Mat thresh;
-    threshold(inverted, thresh, 125, 255, THRESH_BINARY);
+    threshold(inverted, thresh, 25, 255, THRESH_BINARY);
     if (debugVisuals) { imshow("Thresholded", thresh); }
 
+    //dilate bypass
+    Mat dilate = thresh;
+    /*
     Mat dilate;
     int closingSize = 1;
     Mat element = getStructuringElement(MORPH_RECT,Size(2 * closingSize + 1,2 * closingSize + 1),
         Point(closingSize, closingSize));
     morphologyEx(thresh, dilate, MORPH_DILATE, element, Point(-1, -1), 1);
     if (debugVisuals) { imshow("Closed", dilate); }
+    */
     
+
     //waitKey(0);
     vector<vector<Point> > contours;
     vector<Vec4i> hierarchy;
@@ -54,7 +59,7 @@ int main()
     vector<vector<Point>> contoursFinal;
     for (int i = 0; i < contours.size(); i++)
     {
-        if (contours[i].size() < aveSize * 2) 
+        if (contours[i].size() < aveSize * 2 && contours[i].size() > aveSize / 4)
         { 
             contoursFinal.push_back(contours[i]); 
         }
@@ -103,6 +108,9 @@ int main()
         floodFill(singlePiece, Point(width_px / 2, height_px / 2), color);
         threshold(singlePiece, singlePiece, 125, 255, THRESH_BINARY);
 
+        //erode bypass
+        puzzlePieces.push_back(singlePiece);
+        /*
         Mat pieceFinal;
         morphologyEx(singlePiece, pieceFinal, MORPH_ERODE, element, Point(-1, -1), 1);
         puzzlePieces.push_back(pieceFinal);
@@ -115,6 +123,8 @@ int main()
             destroyWindow("piece pre erode");
             destroyWindow("piece final");
         }
+        */
+        
     }
 
     //add edge noise/ blurr (todo)
