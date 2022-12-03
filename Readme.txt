@@ -1,3 +1,9 @@
+Jigsaw puzzles are created using this site: https://puzzle.telegnom.org/
+I just took a screenshot of the result and saved it to my computer as a jpg.
+
+Biggest *todo* is to convert the file location, name, and debug visuals flag to arguments rather than hardcoded in
+
+
 cpp opencv windows install from scratch notes (TL 2022)
 -download latest source code from github for opencv
 -put in directory location where you are going to leave it
